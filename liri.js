@@ -44,14 +44,39 @@ var request = require("request");
 
 // Then run a request to the OMDB API with the movie specified
 request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
-
+    // if (process.argv[3]=== null){
+    //     process.argv[3]="Avengers";
+    // };
   // If the request is successful (i.e. if the response status code is 200)
   if (!error && response.statusCode === 200) {
-
-    console.log(response);
+   
+    // console.log(response);
+    console.log(" Title of the Movie: "+JSON.parse(body).Title+
+                "\n Year the movie came out: "+JSON.parse(body).Year+
+                "\n IMDB Rating of the movie: "+JSON.parse(body).imdbRating+
+                "\n Rotten Tomatoes Rating of the movie: "+JSON.parse(body).Value+
+                "\n Country where the movie was produced: "+ JSON.parse(body).Country+
+                "\n Language of the movie: "+JSON.parse(body).Language+
+                "\n Plot of the Move: "+JSON.parse(body).Plot+
+                "\n Actors in the movie: "+JSON.parse(body).Actors);
+            
   }
 });
 }
 else if (command === 'do-what-it-says'){
-    console.log("???");
-};
+    var fs = require("fs");
+    fs.readFile("random.txt", "utf8", function(error, data) {
+    
+      if (error) {
+        return console.log(error);
+      }
+      var newCommand = data.split(",");
+      
+      // We will then print the contents of data
+      console.log(data);
+      console.log(newCommand);
+
+     
+});
+}
+
