@@ -1,19 +1,18 @@
-
-
 var command = process.argv[2];
 
+function liri(command){
 if (command === 'my-tweets'){
    
     var Twit = require('twitter'); // this is how we import the twit package
     var config = require('./keys.js') //this is we import the config 
     //file which is a js file which contains the keys ans tokens
-    var Twitter = new Twit(config); //this is the object of twit which 
+    var Twitter = new Twit(config); //this is the object of twit 
     
     var params = {
     q: 'user_timeline',
     screen_name: 'johonma88',
     count: 20
-    } // this is the param variable which will have key and value 
+    } 
    
     Twitter.get('search/tweets', params,searchedData); 
     function searchedData(err, data, response) {
@@ -39,18 +38,20 @@ else if (command === 'spotify-this-song'){
  
 }
 else if (command === 'movie-this'){
-   // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
-var request = require("request");
 
-// Then run a request to the OMDB API with the movie specified
+
+var request = require("request");
+if (process.argv[3] == null){
+
+    process.argv[3]="Mr. Nobody";
+    console.log(process.argv[3]);
+};
+
+// Then run a request to the OMDB API 
 request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
-    // if (process.argv[3]=== null){
-    //     process.argv[3]="Avengers";
-    // };
-  // If the request is successful (i.e. if the response status code is 200)
+
   if (!error && response.statusCode === 200) {
-   
-    // console.log(response);
+ 
     console.log(" Title of the Movie: "+JSON.parse(body).Title+
                 "\n Year the movie came out: "+JSON.parse(body).Year+
                 "\n IMDB Rating of the movie: "+JSON.parse(body).imdbRating+
@@ -58,12 +59,21 @@ request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=tri
                 "\n Country where the movie was produced: "+ JSON.parse(body).Country+
                 "\n Language of the movie: "+JSON.parse(body).Language+
                 "\n Plot of the Move: "+JSON.parse(body).Plot+
-                "\n Actors in the movie: "+JSON.parse(body).Actors);
-            
+                "\n Actors in the movie: "+JSON.parse(body).Actors);            
   }
 });
 }
-else if (command === 'do-what-it-says'){
+  //write in log.txt
+  var fs = require("fs");
+  fs.appendFile("log.txt", "\n" + command + "  "+ process.argv[3], err =>{
+    if (err){
+      return console.log(err);
+    }
+    console.log("log.txt was updated");
+  });
+}
+
+if (command === 'do-what-it-says'){
     var fs = require("fs");
     fs.readFile("random.txt", "utf8", function(error, data) {
     
@@ -71,12 +81,14 @@ else if (command === 'do-what-it-says'){
         return console.log(error);
       }
       var newCommand = data.split(",");
-      
-      // We will then print the contents of data
-      console.log(data);
-      console.log(newCommand);
-
+      command = newCommand[0];
+      process.argv[3]= newCommand[1];
+      console.log(command);
+      console.log(process.argv[3]);
+      liri(command);
      
 });
 }
+    liri(command);
+
 
