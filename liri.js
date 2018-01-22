@@ -20,23 +20,32 @@ if (command === 'my-tweets'){
     }
 }
 else if (command === 'spotify-this-song'){
-    var Spotify = require('node-spotify-api');
-    
-   var spotify = new Spotify({
-     id: 'b06564ce29134615878ce01935708487',
-     secret: '17f59d0695044c9597e43c72fd67a074'
-   });
-    
-   spotify
-   .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-   .then(function(data) {
-     console.log(data); 
-   })
-   .catch(function(err) {
-     console.error('Error occurred: ' + err); 
-   });
- 
+// console.log(process.argv[3]);
+var Spotify = require('node-spotify-api');
+
+var spotify = new Spotify({
+  id: 'b06564ce29134615878ce01935708487',
+secret: '17f59d0695044c9597e43c72fd67a074'
+});
+
+spotify
+.search({ type: 'track', query: process.argv[3] })
+.then(function(data) {
+  // console.log(data);
+  var songInfo = data.tracks.items[0];
+  var songResult = console.log('Artist: '+ songInfo.artists[0].name)
+                   console.log('Song: '+ songInfo.name)
+                   console.log('Album: '+ songInfo.album.name)
+                   console.log('Song URL: '+ songInfo.preview_url)
+  // console.log(songResult);
+})
+.catch(function(err) {
+  console.log(err);
+});
+
 }
+
+
 else if (command === 'movie-this'){
 
 
