@@ -6,18 +6,21 @@ if (command === 'my-tweets'){
     var Twit = require('twitter'); // this is how we import the twit package
     var config = require('./keys.js') //this is we import the config 
     //file which is a js file which contains the keys ans tokens
-    var Twitter = new Twit(config); //this is the object of twit 
+    var twitter = new Twit(config); //this is the object of twit 
     
     var params = {
-    q: 'user_timeline',
+    q: 'statuses/user_timeline',
     screen_name: 'johonma88',
     count: 20
     } 
-   
-    Twitter.get('search/tweets', params,searchedData); 
-    function searchedData(err, data, response) {
-    console.log(data);
-    }
+    twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
+      if (!error) {
+        // console.log(tweets);
+        for (let index=0; index<tweets.length; index++){
+              console.log("Tweet: " + index + " created at: "+tweets[index].created_at+" " +tweets[index].text);
+            }
+      }
+    });
 }
 else if (command === 'spotify-this-song'){
 // console.log(process.argv[3]);
