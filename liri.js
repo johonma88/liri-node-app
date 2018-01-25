@@ -9,7 +9,7 @@ if (command === 'my-tweets'){
     var twitter = new Twit(config); //this is the object of twit 
     
     var params = {
-    q: 'statuses/user_timeline',
+    // q: 'statuses/user_timeline',
     screen_name: 'johonma88',
     count: 20
     } 
@@ -17,63 +17,62 @@ if (command === 'my-tweets'){
       if (!error) {
         // console.log(tweets);
         for (let index=0; index<tweets.length; index++){
-              console.log("Tweet: " + index + " created at: "+tweets[index].created_at+" " +tweets[index].text);
+              console.log("Tweet " + index + " created at "+tweets[index].created_at+" : " +tweets[index].text);
             }
       }
     });
 }
 else if (command === 'spotify-this-song'){
-// console.log(process.argv[3]);
-var Spotify = require('node-spotify-api');
+    var Spotify = require('node-spotify-api');
 
-var spotify = new Spotify({
-  id: 'b06564ce29134615878ce01935708487',
-secret: '17f59d0695044c9597e43c72fd67a074'
-});
+    var spotify = new Spotify({
+      id: 'b06564ce29134615878ce01935708487',
+    secret: '17f59d0695044c9597e43c72fd67a074'
+    });
 
-spotify
-.search({ type: 'track', query: process.argv[3] })
-.then(function(data) {
-  // console.log(data);
-  var songInfo = data.tracks.items[0];
-  var songResult = console.log('Artist: '+ songInfo.artists[0].name)
-                   console.log('Song: '+ songInfo.name)
-                   console.log('Album: '+ songInfo.album.name)
-                   console.log('Song URL: '+ songInfo.preview_url)
-  // console.log(songResult);
-})
-.catch(function(err) {
-  console.log(err);
-});
+    spotify
+    .search({ type: 'track', query: process.argv[3] })
+    .then(function(data) {
+      var songInfo = data.tracks.items;
+   
+     for (var index=0; index < songInfo.length; index++){
+      
+        console.log('\n Artist: '+ songInfo[index].artists[0].name);
+        console.log('Song: '+ songInfo[index].name);
+        console.log('Album: '+ songInfo[index].album.name);
+        console.log('Song URL: '+ songInfo[index].preview_url);
+     }
+    
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 
 }
 
-
 else if (command === 'movie-this'){
+    var request = require("request");
+      if (process.argv[3] == null){
 
+          process.argv[3]="Mr. Nobody";
+          console.log(process.argv[3]);
+      };
 
-var request = require("request");
-if (process.argv[3] == null){
-
-    process.argv[3]="Mr. Nobody";
-    console.log(process.argv[3]);
-};
-
-// Then run a request to the OMDB API 
-request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
-
-  if (!error && response.statusCode === 200) {
- 
-    console.log(" Title of the Movie: "+JSON.parse(body).Title+
-                "\n Year the movie came out: "+JSON.parse(body).Year+
-                "\n IMDB Rating of the movie: "+JSON.parse(body).imdbRating+
-                "\n Rotten Tomatoes Rating of the movie: "+JSON.parse(body).Value+
-                "\n Country where the movie was produced: "+ JSON.parse(body).Country+
-                "\n Language of the movie: "+JSON.parse(body).Language+
-                "\n Plot of the Move: "+JSON.parse(body).Plot+
-                "\n Actors in the movie: "+JSON.parse(body).Actors);            
-  }
-});
+      // Then run a request to the OMDB API 
+      request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=trilogy", function(error, response, body) {
+     
+        if (!error && response.statusCode === 200) {
+      
+          console.log("\n Title of the Movie: "+JSON.parse(body).Title+
+                      "\n Year the movie came out: "+JSON.parse(body).Year+
+                      "\n IMDB Rating of the movie: "+JSON.parse(body).imdbRating+
+                      "\n Rotten Tomatoes Rating of the movie: "+JSON.parse(body).Value+
+                      "\n Country where the movie was produced: "+ JSON.parse(body).Country+
+                      "\n Language of the movie: "+JSON.parse(body).Language+
+                      "\n Plot of the Move: "+JSON.parse(body).Plot+
+                      "\n Actors in the movie: "+JSON.parse(body).Actors);            
+        }
+      });
 }
   //write in log.txt
   var fs = require("fs");
@@ -81,7 +80,7 @@ request("http://www.omdbapi.com/?t="+ process.argv[3]+"&y=&plot=short&apikey=tri
     if (err){
       return console.log(err);
     }
-    console.log("log.txt was updated");
+    // console.log("log.txt was updated");
   });
 }
 
