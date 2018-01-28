@@ -66,7 +66,9 @@ else if (command === 'movie-this'){
           console.log("\n Title of the Movie: "+JSON.parse(body).Title+
                       "\n Year the movie came out: "+JSON.parse(body).Year+
                       "\n IMDB Rating of the movie: "+JSON.parse(body).imdbRating+
-                      "\n Rotten Tomatoes Rating of the movie: "+JSON.parse(body).Value+
+                      "\n Rotten Tomatoes Rating of the movie: "+JSON.parse(body).Ratings.find(
+                        source => source.Source === "Rotten Tomatoes"
+                      ).Value +
                       "\n Country where the movie was produced: "+ JSON.parse(body).Country+
                       "\n Language of the movie: "+JSON.parse(body).Language+
                       "\n Plot of the Move: "+JSON.parse(body).Plot+
